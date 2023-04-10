@@ -29,12 +29,12 @@ if __name__ == "__main__":
 
     # Train the baseline model and visualize its performance
     baseline_model.compile(loss=tf.losses.MeanAbsoluteError())
-    # train_performance = {}
-    # train_performance["Baseline"] = baseline_model.evaluate(baseline_window.train)
+    train_performance = {}
+    train_performance["Baseline"] = baseline_model.evaluate(baseline_window.train)
 
-    # # Evaluate the performance of the baseline model on validation data
-    # val_performance = {}
-    # val_performance["Baseline"] = baseline_model.evaluate(baseline_window.val)
+    # Evaluate the performance of the baseline model on validation data
+    val_performance = {}
+    val_performance["Baseline"] = baseline_model.evaluate(baseline_window.val)
 
     # # Evaluate the performance of the baseline model on test data
     test_performance = {}
