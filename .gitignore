@@ -1,0 +1,5 @@
+SportDB/
+__pycache__/
+models/
+
+SportDB.pkl
