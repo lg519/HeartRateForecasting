@@ -1,0 +1,2 @@
+﻿Sex	Age	Weight	Height	Smoker	Alcool	Training_Rate
+1	27	50	167	0	1	2

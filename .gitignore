@@ -3,4 +3,4 @@ models/
 
 # Do not include the database files
 SportDB.pkl
-SportDB/
+# SportDB/

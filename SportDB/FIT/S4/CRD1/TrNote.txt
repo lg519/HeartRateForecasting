@@ -1,0 +1,24 @@
+﻿Resting: from 00:00:00 to 00:05:18
+Cyclette: from 00:05:18 to 00:15:20 (speed: 70-80rpm; Difficulty level: 6/12)
+Resting: from 00:15:20 to 00:17:27
+Smith Machine squat: from 00:17:27 to 00:17:55 (8 rep; 50kg)
+Resting: from 00:17:55 to 00:19:59
+Smith Machine squat: from 00:19:59 to 00:20:20 (6 rep; 70kg)
+Resting: from 00:20:20 to 00:22:52
+Flat Bench Barbell Triceps Extension: from 00:22:52 to 00:23:16 (8 rep; 48kg)
+Resting: from 00:23:16 to 00:24:50
+Flat Bench Barbell Triceps Extension: from 00:24:50 to 00:25:10 (6 rep; 58kg)
+Resting: from 00:25:10 to 00:27:08 
+Lat Machine: from 00:27:08 to 00:27:31 (8 rep; 45kg)
+Resting: from 00:27:31 to 00:29:10 
+Lat Machine: from 00:29:10 to 00:29:29 (6 rep; 55kg) 
+Resting: form 00:29:29 to  00:31:40 
+Overhead Dumbbell Tricep Extension: 00:31:40 to 00:32:05 (8 rep; 32kg)
+Resting: from 00:32:05 to 00:33:46
+Overhead Dumbbell Tricep Extension: 00:33:46 to 00:34:06 (6 rep; 36kg)
+Resting: from 00:34:06 to 00:36:35
+Treadmill: from 00:36:35 to 00:46:35  (speed: 10km/h; Slope: 0/16)
+Recovery: from 00:46:35 to 00:51:42 
+
+
+

@@ -1,0 +1,7 @@
+﻿WU: none
+SKILL: none
+WOD: from 00:00:00 to 00:09:00
+     CAP circuit composed by: - 200m running
+		              - 5 thruster
+		              - 8 burpees
+

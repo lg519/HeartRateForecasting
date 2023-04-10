@@ -1,0 +1,6 @@
+﻿WU: none 
+SKILL: none
+WOD: from 00:00:00 to 00:20:00
+     AMRAP circuit composed by: -400m running
+		                -pull up As Many Reps as Possible
+

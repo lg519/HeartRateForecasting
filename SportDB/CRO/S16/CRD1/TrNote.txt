@@ -1,0 +1,8 @@
+﻿WU: none
+SKILL: none
+WOD: from 00:00:00 to 00:11:00
+     composed by: - 21 calories in row + BB Deadlift as many reps as possible in 3 minutes
+		  - 1min resting
+		  - 21 calories in skierg + glute-ham developer as many reps as possible in 3 minutes
+		  - 1min resting
+	          - 21 calories in bike + box jump as many reps as possible in 3 minutes

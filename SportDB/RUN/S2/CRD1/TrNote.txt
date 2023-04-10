@@ -1,0 +1,6 @@
+﻿Initial Flat Phase: from 00:00:00 to 00:05:07
+Uphill Phase: from 00:05:07 to 00:13:54
+Downhill Phase: from 00:13:54 to 00:19:13
+Final Flat Phase: from 00:19:13 to 00:32:50
+
+

@@ -1,0 +1,4 @@
+﻿Resting Phase: from 00:00:00 to 00:16:07
+Exercise Phase: from 00:16:07 to 01:57:58
+Recovery Phase: from 01:57:58 to 02:10:54
+

@@ -1,0 +1,4 @@
+﻿Jogging outside
+Resting : none
+Exercise : from 00:00:00 to 00:32:27
+Recovery : none

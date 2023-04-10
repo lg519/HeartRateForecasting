@@ -1,0 +1,7 @@
+﻿Resting Phase: from 00:00:00 to 00:05:00
+Initial Phase: from 00:05:00 to 00:15:03
+Resting Phase: from 00:15:03 to 00:17:43
+Central Phase: from 00:17:43 to 00:41:15
+Resting Phase: from 00:41:15 to 00:43:41
+Final Phase: from 00:43:41 to 01:03:10
+

@@ -1,0 +1,6 @@
+﻿Jogging on the treadmill
+Resting : from 00:00:00 to 00:06:47
+Exercise : from 00:06:47 to 00:16:19
+Recovery : from 00:16:19 to 00:20:13
+
+

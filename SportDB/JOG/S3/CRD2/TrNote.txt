@@ -1,0 +1,4 @@
+﻿Jogging outside
+Resting : from 00:00:00 to 00:06:16
+Exercise : from 00:06:16 to 00:44:03
+Recovery : from 00:44:03 to 00:46:38

@@ -1,0 +1,25 @@
+﻿WU: from 00:00:00 to 00:18:28
+	composed by: - 200m running
+		     - 25 squat
+		     - 15 toes to bar
+		     - 25 squat
+		     - 200m running
+SKILL: from 00:18:28 to 00:36:28
+	composed by: - 5 front squat from 80% to max load
+		     - 5 front squat from 80% to max load
+		     - 3 front squat from 80% to max load
+		     - 3 front squat from 80% to max load
+		     - 1 front squat from 80% to max load
+		     - 1 front squat from 80% to max load
+RESTING: from 00:36:28 to 00:42:36
+WOD: from 00:42:36 to 00:49:46
+     CAP circuit composed by: - 200m running
+			      - BB Snatch (30 kg)
+			      - 25 pull up
+                              - 400m running
+			      - BB Snatch (20 kg)
+			      - 25 pull up
+                              - 600m running
+			      - BB Snatch (10 kg)
+			      - 25 pull up
+

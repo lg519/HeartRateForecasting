@@ -1,0 +1,20 @@
+﻿WU: from 00:00:00 to 00:42:36
+	composed by: - 15s hollow hold
+	 	     - 15s arch hold
+	  	     - 30s rest
+                     - 15s hollow hold
+	 	     - 15s arch hold
+	  	     - 30s rest
+                     - 15s hollow hold
+	 	     - 15s arch hold
+	  	     - 30s rest
+                     - 15s hollow hold
+	 	     - 15s arch hold
+	  	     - 30s rest
+
+SKILL: none
+WOD: from 00:42:36 to 01:02:09
+     Emom circuit composed by: - 7 deadlift
+		               - 14 toes to bar
+		               - 42 double-under
+
