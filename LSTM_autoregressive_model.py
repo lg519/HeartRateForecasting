@@ -57,15 +57,18 @@ class FeedBack(tf.keras.Model):
         return predictions
 
 
-window = WindowGenerator(input_width=input_width, label_width=label_width, shift=shift)
+if __name__ == "__main__":
+    # Create a window and plot it
+    window = WindowGenerator(
+        input_width=input_width, label_width=label_width, shift=shift
+    )
 
-feedback_model = FeedBack(units=32, out_steps=label_width)
+    feedback_model = FeedBack(units=32, out_steps=label_width)
 
-prediction, state = feedback_model.warmup(window.example[0])
-print(f"prediction shape: {prediction.shape}")
+    prediction, state = feedback_model.warmup(window.example[0])
+    print(f"prediction shape: {prediction.shape}")
 
+    history = compile_and_fit(feedback_model, window)
+    window.plot(feedback_model)
 
-history = compile_and_fit(feedback_model, window)
-window.plot(feedback_model)
-
-feedback_model.save("models/LSTM_autoregressive_model")
+    feedback_model.save("models/LSTM_autoregressive_model")

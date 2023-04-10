@@ -23,21 +23,22 @@ baseline_window = WindowGenerator(
 )
 
 
-# Create the baseline model
-baseline_model = Baseline(label_width=baseline_window.label_width)
+if __name__ == "__main__":
+    # Create the baseline model
+    baseline_model = Baseline(label_width=baseline_window.label_width)
 
-# Train the baseline model and visualize its performance
-baseline_model.compile(loss=tf.losses.MeanAbsoluteError())
-# train_performance = {}
-# train_performance["Baseline"] = baseline_model.evaluate(baseline_window.train)
+    # Train the baseline model and visualize its performance
+    baseline_model.compile(loss=tf.losses.MeanAbsoluteError())
+    # train_performance = {}
+    # train_performance["Baseline"] = baseline_model.evaluate(baseline_window.train)
 
-# # Evaluate the performance of the baseline model on validation data
-# val_performance = {}
-# val_performance["Baseline"] = baseline_model.evaluate(baseline_window.val)
+    # # Evaluate the performance of the baseline model on validation data
+    # val_performance = {}
+    # val_performance["Baseline"] = baseline_model.evaluate(baseline_window.val)
 
-# # Evaluate the performance of the baseline model on test data
-test_performance = {}
-test_performance["Baseline"] = baseline_model.evaluate(baseline_window.test)
+    # # Evaluate the performance of the baseline model on test data
+    test_performance = {}
+    test_performance["Baseline"] = baseline_model.evaluate(baseline_window.test)
 
-# Visualize the predictions of the baseline model
-baseline_window.plot(baseline_model)
+    # Visualize the predictions of the baseline model
+    baseline_window.plot(baseline_model)
