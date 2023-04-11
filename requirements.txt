@@ -3,5 +3,5 @@ scipy
 matplotlib
 seaborn
 numpy
-tensorflow-gpu
+tensorflow
 scikit-learn
