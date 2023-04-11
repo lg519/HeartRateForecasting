@@ -13,13 +13,13 @@ uptime
 
 echo "STEP 1"
 
-# use cuda 11.2
-# if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
-#     then
-#         . /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh
-#     else
-#         echo "CUDA 11.2.1 not found"
-# fi
+use cuda 11.2
+if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
+    then
+        . /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh
+    else
+        echo "CUDA 11.2.1 not found"
+fi
 
 # run the python scripts
 cd /vol/bitbucket/${USER}/HeartRateForecasting
