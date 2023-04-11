@@ -11,7 +11,6 @@ export PATH=/vol/bitbucket/${USER}/HeartRateForecasting/HeartRateForecasting_env
 source activate
 
 # use cuda 11.2
-source /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh
 if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
     then
         . /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh
