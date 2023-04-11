@@ -25,7 +25,8 @@ def read_demographics(file_path):
 
 
 def read_cardiorespiratory(file_path):
-    data = scipy.io.loadmat(file_path)["Data"]
+    data = scipy.io.loadmat(file_path, mat_dtype=True)["Data"]
+    # print(data["HR"][0, 0].dtype)
     return {
         "ECG": data["ECG"][0, 0],
         "RR": data["RR"][0, 0],
