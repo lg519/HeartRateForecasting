@@ -11,6 +11,7 @@ TERM=vt100 # or TERM=xterm
 /usr/bin/nvidia-smi
 uptime
 
+echo "STEP 1"
 
 # use cuda 11.2
 # if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
@@ -22,5 +23,8 @@ uptime
 
 # run the python scripts
 cd /vol/bitbucket/${USER}/HeartRateForecasting
+
+echo "STEP 2"
 python3 /vol/bitbucket/${USER}/HeartRateForecasting/heart_rate_dataset.py
+echo "STEP 3"
 python3 /vol/bitbucket/${USER}/HeartRateForecasting/LSTM_autoregressive_model.py
