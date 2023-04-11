@@ -17,9 +17,9 @@ find / -name libnvinfer.so.7 2>/dev/null
 find / -name libnvinfer_plugin.so.7 2>/dev/null
 
 use cuda 11.2
-if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
+if [ -f /vol/cuda/11.0.3-cudnn8.0.5.39/setup.sh ]
     then
-        . /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh
+        . /vol/cuda/11.0.3-cudnn8.0.5.39/setup.sh
     else
         echo "CUDA 11.2.1 not found"
 fi
