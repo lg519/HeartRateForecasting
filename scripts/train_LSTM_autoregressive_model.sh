@@ -3,9 +3,7 @@
 #SBATCH --mail-type=ALL # required to send email notifcations
 #SBATCH --mail-user=<lg519> # required to send email notifcations - please replace <your_username> with your college login name or email address
 
-set -e
-# trap ERR signal to print line number and file name
-trap 'echo "Error on line $LINENO of file $0"; exit 1' ERR
+
 
 export PATH=/vol/bitbucket/${USER}/HeartRateForecasting/HeartRateForecasting_env/bin/:$PATH
 source activate
