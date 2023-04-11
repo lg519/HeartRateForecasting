@@ -9,6 +9,11 @@ TERM=vt100 # or TERM=xterm
 /usr/bin/nvidia-smi
 uptime
 
+
+# use cuda 11.4
+. /vol/cuda/11.4.120-cudnn8.2.4/setup.sh
+
+# run the python scripts
 cd /vol/bitbucket/${USER}/HeartRateForecasting
 python3 /vol/bitbucket/${USER}/HeartRateForecasting/heart_rate_dataset.py
 python3 /vol/bitbucket/${USER}/HeartRateForecasting/LSTM_autoregressive_model.py
