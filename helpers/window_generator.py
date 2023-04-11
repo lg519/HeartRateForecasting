@@ -36,15 +36,17 @@ print(len(heart_rate_data))
 #####################################################
 
 # Apply differencing to each row of the heart rate data in the DataFrame
-heart_rate_data_squeezed = heart_rate_data.apply(lambda row: np.squeeze(row))
+# heart_rate_data_squeezed = heart_rate_data.apply(lambda row: np.squeeze(row))
 
 
-def differencing(row):
-    differenced_row = np.diff(row, n=1, axis=0)
-    return np.reshape(differenced_row, (-1, 1))
+# def differencing(row):
+#     differenced_row = np.diff(row, n=1, axis=0)
+#     return np.reshape(differenced_row, (-1, 1))
 
 
-differenced_heart_rate_data = heart_rate_data_squeezed.apply(differencing)
+# differenced_heart_rate_data = heart_rate_data_squeezed.apply(differencing)
+
+differenced_heart_rate_data = heart_rate_data
 
 
 # Split the data into train, validation, and test sets
@@ -90,9 +92,9 @@ test_df = [scaler.transform(item) for item in test_df]
 # test_df = (test_df - train_mean) / train_std
 
 # Set input_width
-input_width = 50
-label_width = 10
-shift = 10
+input_width = 120
+label_width = 30
+shift = 30
 
 
 class WindowGenerator:
