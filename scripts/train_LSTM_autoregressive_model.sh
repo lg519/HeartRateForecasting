@@ -13,8 +13,13 @@ TERM=vt100 # or TERM=xterm
 uptime
 
 
-# use cuda 11.4
-. /vol/cuda/11.4.120-cudnn8.2.4/setup.sh
+# use cuda 11.2
+if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
+    then
+        . /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh
+    else
+        echo "CUDA 11.2.1 not found"
+fi
 
 # run the python scripts
 cd /vol/bitbucket/${USER}/HeartRateForecasting
