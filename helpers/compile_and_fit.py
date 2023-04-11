@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-MAX_EPOCHS = 20
+MAX_EPOCHS = 1
 
 
 def compile_and_fit(model, window, patience=2):
