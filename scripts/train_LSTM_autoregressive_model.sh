@@ -9,7 +9,15 @@ trap 'echo "Error on line $LINENO of file $0"; exit 1' ERR
 
 export PATH=/vol/bitbucket/${USER}/HeartRateForecasting/HeartRateForecasting_env/bin/:$PATH
 source activate
-source /vol/cuda/11.0.3-cudnn8.0.5.39/setup.sh
+
+# use cuda 11.2
+source /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh
+if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
+    then
+        . /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh
+    else
+        echo "CUDA 11.2.1 not found"
+fi
 TERM=vt100 # or TERM=xterm
 /usr/bin/nvidia-smi
 uptime
