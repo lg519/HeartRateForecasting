@@ -69,6 +69,6 @@ if __name__ == "__main__":
     print(f"prediction shape: {prediction.shape}")
 
     history = compile_and_fit(feedback_model, window)
-    window.plot(feedback_model)
+    # window.plot(feedback_model)
 
     feedback_model.save("models/LSTM_autoregressive_model")
