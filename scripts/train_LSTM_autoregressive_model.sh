@@ -8,6 +8,7 @@ source /vol/cuda/11.0.3-cudnn8.0.5.39/setup.sh
 TERM=vt100 # or TERM=xterm
 /usr/bin/nvidia-smi
 uptime
-export PATH=/vol/bitbucket/${USER}/HeartRateForecasting/:$PATH
+
+cd /vol/bitbucket/${USER}/HeartRateForecasting
 python3 /vol/bitbucket/${USER}/HeartRateForecasting/heart_rate_dataset.py
 python3 /vol/bitbucket/${USER}/HeartRateForecasting/LSTM_autoregressive_model.py
