@@ -2,36 +2,92 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 
-
-# load the data
-# df = pd.read_csv("SportDB.csv")
 
 df = pd.read_pickle("SportDB.pkl")
 # extract heart rate data
 heart_rate_data = df["HR"]
 
+
+#####################################################
+############# REMOVE 0 VALUES #######################
+#####################################################
+# Function to check if there's any nested array with a 0
+def has_zero(arr):
+    for nested_arr in arr:
+        if nested_arr[0] == 0:
+            return True
+    return False
+
+
+# Apply the has_zero function to each row
+zero_check = heart_rate_data.apply(has_zero)
+
+# Filter the rows based on the check results
+heart_rate_data = heart_rate_data[~zero_check].reset_index(drop=True)
+
+print(len(heart_rate_data))
+
+
+#####################################################
+#####################################################
+#####################################################
+
+# Apply differencing to each row of the heart rate data in the DataFrame
+heart_rate_data_squeezed = heart_rate_data.apply(lambda row: np.squeeze(row))
+
+
+def differencing(row):
+    differenced_row = np.diff(row, n=1, axis=0)
+    return np.reshape(differenced_row, (-1, 1))
+
+
+differenced_heart_rate_data = heart_rate_data_squeezed.apply(differencing)
+
+
 # Split the data into train, validation, and test sets
-n = len(heart_rate_data)
-train_df = heart_rate_data[0 : int(n * 0.7)]
-val_df = heart_rate_data[int(n * 0.7) : int(n * 0.9)]
-test_df = heart_rate_data[int(n * 0.9) :]
+n = len(differenced_heart_rate_data)
+train_df = differenced_heart_rate_data[0 : int(n * 0.7)]
+val_df = differenced_heart_rate_data[int(n * 0.7) : int(n * 0.9)]
+test_df = differenced_heart_rate_data[int(n * 0.9) :]
 
 num_features = 1
 
 
-# Extract heart rate data (assuming each entry is an array of readings)
-train_df_data_concatenated = np.concatenate(train_df.values)
+# Fit the scaler on training data
+scaler = StandardScaler()
+scaler.fit(np.vstack(train_df))
+
+print(f" stacked data shape is {np.vstack(train_df).shape}")
 
 
-# Preprocess the data
-train_mean = train_df_data_concatenated.mean()
-train_std = train_df_data_concatenated.std()
+# print the mean and std of the stacked data
+# print(f"mean is {np.vstack(train_df).mean()}")
+# print(f"std is {np.vstack(train_df).std()}")
+
+# # print the mean and std of the scaler
+# print(f"mean is {scaler.mean_}")
+# print(f"std is {scaler.scale_}")
+
+# Transform train, validation, and test data
+train_df = [scaler.transform(item) for item in train_df]
+val_df = [scaler.transform(item) for item in val_df]
+test_df = [scaler.transform(item) for item in test_df]
+
+# # Extract heart rate data (assuming each entry is an array of readings)
+# train_df_data_concatenated = np.concatenate(train_df.values)
 
 
-train_df = (train_df - train_mean) / train_std
-val_df = (val_df - train_mean) / train_std
-test_df = (test_df - train_mean) / train_std
+# # Preprocess the data
+# train_mean = train_df_data_concatenated.mean()
+# train_std = train_df_data_concatenated.std()
+
+
+# train_df = (train_df - train_mean) / train_std
+# val_df = (val_df - train_mean) / train_std
+# test_df = (test_df - train_mean) / train_std
 
 # Set input_width
 input_width = 50
@@ -50,6 +106,9 @@ class WindowGenerator:
         test_df=test_df,
         label_columns=None,
     ):
+        # Set random seed
+        tf.random.set_seed(1)
+        np.random.seed(1)
         # Store the raw data.
         self.train_df = train_df
         self.val_df = val_df
@@ -215,10 +274,6 @@ class WindowGenerator:
 
 
 if __name__ == "__main__":
-    # visualize the data
-    plt.plot(train_df_data_concatenated)
-    plt.show()
-
     print(f"trian_df shape: {train_df[0].shape}")
     window = WindowGenerator(
         input_width=input_width, label_width=label_width, shift=shift
