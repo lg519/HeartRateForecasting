@@ -2,7 +2,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mail-type=ALL # required to send email notifcations
 #SBATCH --mail-user=<lg519> # required to send email notifcations - please replace <your_username> with your college login name or email address
-#SBATCH –output=<LSTM_training>%j.out
+#SBATCH --output=<LSTM_training>%j.out
 
 
 export PATH=/vol/bitbucket/${USER}/HeartRateForecasting/HeartRateForecasting_env/bin/:$PATH
