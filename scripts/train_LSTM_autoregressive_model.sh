@@ -13,6 +13,9 @@ uptime
 
 echo "STEP 1"
 
+find / -name libnvinfer.so.7 2>/dev/null
+find / -name libnvinfer_plugin.so.7 2>/dev/null
+
 use cuda 11.2
 if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
     then
