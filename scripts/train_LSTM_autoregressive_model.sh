@@ -7,6 +7,7 @@
 
 export PATH=/vol/bitbucket/${USER}/HeartRateForecasting/HeartRateForecasting_env/bin/:$PATH
 source activate
+pip freeze
 TERM=vt100 # or TERM=xterm
 /usr/bin/nvidia-smi
 uptime
