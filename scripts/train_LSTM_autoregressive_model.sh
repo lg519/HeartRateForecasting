@@ -9,4 +9,5 @@ TERM=vt100 # or TERM=xterm
 /usr/bin/nvidia-smi
 uptime
 export PATH=/vol/bitbucket/${USER}/HeartRateForecasting/:$PATH
+python3 /vol/bitbucket/${USER}/HeartRateForecasting/heart_rate_dataset.py
 python3 /vol/bitbucket/${USER}/HeartRateForecasting/LSTM_autoregressive_model.py
