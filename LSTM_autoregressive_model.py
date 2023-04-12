@@ -66,10 +66,10 @@ if __name__ == "__main__":
         input_width=input_width, label_width=label_width, shift=shift
     )
 
-    feedback_model = FeedBack(units=32, out_steps=label_width)
+    feedback_model = FeedBack(units=2000, out_steps=label_width)
 
-    prediction, state = feedback_model.warmup(window.example[0])
-    print(f"prediction shape: {prediction.shape}")
+    feedback_model.build(input_shape=(None, input_width, num_features))
+    print(feedback_model.summary())
 
     history = compile_and_fit(feedback_model, window)
     # window.plot(feedback_model)
