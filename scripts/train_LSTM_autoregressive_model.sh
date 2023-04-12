@@ -5,8 +5,8 @@
 
 
 
-#export PATH=/vol/bitbucket/${USER}/HeartRateForecasting/HeartRateForecasting_env/bin/:$PATH
-#source activate
+export PATH=/vol/bitbucket/${USER}/HeartRateForecasting/HeartRateForecasting_env/bin/:$PATH
+source activate
 #pip freeze
 TERM=vt100 # or TERM=xterm
 /usr/bin/nvidia-smi
@@ -19,18 +19,18 @@ echo "STEP 1"
 #use cuda 11.2
 #export PATH=$PATH:/vol/cuda/11.2.1-cudnn8.1.0.77/bin
 
-# if [[ $(getconf LONG_BIT) == "32" ]]; then
-#         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/vol/cuda/11.2.1-cudnn8.1.0.77/lib
-#     else
-#         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/vol/cuda/11.2.1-cudnn8.1.0.77/lib64:/vol/cuda/11.2.1-cudnn8.1.0.77/lib
-# fi
+if [[ $(getconf LONG_BIT) == "32" ]]; then
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/vol/cuda/11.2.1-cudnn8.1.0.77/lib
+    else
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/vol/cuda/11.2.1-cudnn8.1.0.77/lib64:/vol/cuda/11.2.1-cudnn8.1.0.77/lib
+fi
 
-# if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
-#     then
-#         . /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh
-#     else
-#         echo "ERROR: /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh not found"
-# fi
+if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
+    then
+        . /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh
+    else
+        echo "ERROR: /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh not found"
+fi
 
 # run the python scripts
 cd /vol/bitbucket/${USER}/HeartRateForecasting
