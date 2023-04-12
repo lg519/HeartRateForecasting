@@ -19,20 +19,16 @@ class StackedLSTM(tf.keras.layers.Layer):
         self.dropout_rate = dropout_rate
 
         self.lstm_layers = [
-            tf.keras.layers.LSTM(
+            tf.compat.v1.keras.layers.CuDNNLSTM(
                 units,
                 return_sequences=True,
                 return_state=True,
-                dropout=dropout_rate,
-                recurrent_dropout=dropout_rate,
             )
             for _ in range(num_layers - 1)
         ] + [
-            tf.keras.layers.LSTM(
+            tf.compat.v1.keras.layers.CuDNNLSTM(
                 units,
                 return_state=True,
-                dropout=dropout_rate,
-                recurrent_dropout=dropout_rate,
             )
         ]
 
