@@ -5,4 +5,4 @@ seaborn
 numpy
 tensorflow==2.11.0
 scikit-learn
-tensorrt
+#tensorrt
