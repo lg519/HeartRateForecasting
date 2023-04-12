@@ -58,6 +58,9 @@ class FeedBack(tf.keras.Model):
 
 
 if __name__ == "__main__":
+    print("TensorFlow version:", tf.__version__)
+    print("GPU devices:", tf.config.list_physical_devices("GPU"))
+
     # Create a window and plot it
     window = WindowGenerator(
         input_width=input_width, label_width=label_width, shift=shift

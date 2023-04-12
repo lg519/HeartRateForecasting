@@ -41,8 +41,6 @@ echo "CUDA version $(nvcc --version | grep 'release' | awk '{print $5}') is inst
 # run the python scripts
 cd /vol/bitbucket/${USER}/HeartRateForecasting
 
-pwd
-ls 
 
 echo "STEP 2"
-python3 /vol/bitbucket/${USER}/HeartRateForecasting/test_gpu.py
+python3 /vol/bitbucket/${USER}/HeartRateForecasting/LSTM_autoregressive_model.py
