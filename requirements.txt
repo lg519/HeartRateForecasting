@@ -4,7 +4,7 @@ matplotlib
 seaborn
 numpy
 tensorflow==2.11.0
-#cudatoolkit==11.2.1
-#cudnn==8.1.77
+cudatoolkit==11.2.1
+cudnn==8.1.77
 scikit-learn
 tensorrt
