@@ -11,56 +11,68 @@ from helpers.window_generator import (
 from helpers.compile_and_fit import compile_and_fit
 
 
+class StackedLSTM(tf.keras.layers.Layer):
+    def __init__(self, units, num_layers, dropout_rate):
+        super().__init__()
+        self.units = units
+        self.num_layers = num_layers
+        self.dropout_rate = dropout_rate
+
+        self.lstm_layers = [
+            tf.keras.layers.LSTM(
+                units,
+                return_sequences=True,
+                return_state=True,
+                dropout=dropout_rate,
+                recurrent_dropout=dropout_rate,
+            )
+            for _ in range(num_layers - 1)
+        ] + [
+            tf.keras.layers.LSTM(
+                units,
+                return_state=True,
+                dropout=dropout_rate,
+                recurrent_dropout=dropout_rate,
+            )
+        ]
+
+    def call(self, inputs, training=None, states=None):
+        if states is None:
+            states = [None] * self.num_layers
+
+        x = inputs
+        new_states = []
+        for i, lstm in enumerate(self.lstm_layers):
+            x, h, c = lstm(x, initial_state=states[i], training=training)
+            new_states.append((h, c))
+
+        return x, new_states
+
+
 class FeedBack(tf.keras.Model):
-    def __init__(self, units, out_steps, dropout_rate=0.5):
+    def __init__(self, units, out_steps, num_layers=3, dropout_rate=0.5):
         super().__init__()
         self.out_steps = out_steps
-        self.units = units
-        self.dropout_rate = dropout_rate
-        self.lstm_layers = [
-            tf.compat.v1.keras.layers.CuDNNLSTM(units),
-            tf.keras.layers.Dropout(self.dropout_rate),  # Add Dropout layers
-            tf.compat.v1.keras.layers.CuDNNLSTM(units),
-            tf.keras.layers.Dropout(self.dropout_rate),
-            tf.compat.v1.keras.layers.CuDNNLSTM(units),
-        ]
-        self.stacked_lstm_cells = tf.keras.layers.StackedRNNCells(self.lstm_layers)
-        # Also wrap the StackedRNNCells in an RNN to simplify the `warmup` method.
-        self.lstm_rnn = tf.keras.layers.RNN(self.stacked_lstm_cells, return_state=True)
+        self.stacked_lstm = StackedLSTM(units, num_layers, dropout_rate)
         self.dense = tf.keras.layers.Dense(num_features)
 
     def warmup(self, inputs):
-        # inputs.shape => (batch, time, features)
-        # x.shape => (batch, lstm_units)
-        x, *states = self.lstm_rnn(inputs)
-
-        # predictions.shape => (batch, features)
+        x, states = self.stacked_lstm(inputs)
         prediction = self.dense(x)
         return prediction, states
 
     def call(self, inputs, training=None):
-        # Use a TensorArray to capture dynamically unrolled outputs.
         predictions = []
-        # Initialize the LSTM state.
         prediction, states = self.warmup(inputs)
-
-        # Insert the first prediction.
         predictions.append(prediction)
 
-        # Run the rest of the prediction steps.
         for n in range(1, self.out_steps):
-            # Use the last prediction as input.
-            x = prediction
-            # Execute one lstm step.
-            x, states = self.stacked_lstm_cells(x, states=states, training=training)
-            # Convert the lstm output to a prediction.
+            x = prediction[:, -1:, np.newaxis]
+            x, states = self.stacked_lstm(x, training=training, states=states)
             prediction = self.dense(x)
-            # Add the prediction to the output.
             predictions.append(prediction)
 
-        # predictions.shape => (time, batch, features)
         predictions = tf.stack(predictions)
-        # predictions.shape => (batch, time, features)
         predictions = tf.transpose(predictions, [1, 0, 2])
         return predictions
 
@@ -69,7 +81,6 @@ if __name__ == "__main__":
     print("TensorFlow version:", tf.__version__)
     print("GPU devices:", tf.config.list_physical_devices("GPU"))
 
-    # Create a window and plot it
     window = WindowGenerator(
         input_width=input_width, label_width=label_width, shift=shift
     )
@@ -80,6 +91,5 @@ if __name__ == "__main__":
     print(feedback_model.summary())
 
     history = compile_and_fit(feedback_model, window)
-    # window.plot(feedback_model)
 
-    feedback_model.save("models/LSTM_3_layers_cuda_model")
+    feedback_model.save("models/LSTM_autoregressive_model")
