@@ -13,14 +13,8 @@ TERM=vt100 # or TERM=xterm
 uptime
 
 echo "STEP 1"
-echo "CUDA version $(nvcc --version | grep 'release' | awk '{print $5}') is installed"
-
-
-
-
 
 #use cuda 11.2
-#export PATH=$PATH:/vol/cuda/11.2.1-cudnn8.1.0.77/bin
 
 if [[ $(getconf LONG_BIT) == "32" ]]; then
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/vol/cuda/11.2.1-cudnn8.1.0.77/lib
