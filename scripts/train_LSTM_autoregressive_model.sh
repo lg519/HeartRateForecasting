@@ -13,6 +13,9 @@ TERM=vt100 # or TERM=xterm
 uptime
 
 echo "STEP 1"
+echo "CUDA version $(nvcc --version | grep 'release' | awk '{print $5}') is installed"
+
+
 
 
 
@@ -31,6 +34,9 @@ if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
     else
         echo "ERROR: /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh not found"
 fi
+
+echo "CUDA version $(nvcc --version | grep 'release' | awk '{print $5}') is installed"
+
 
 # run the python scripts
 cd /vol/bitbucket/${USER}/HeartRateForecasting
