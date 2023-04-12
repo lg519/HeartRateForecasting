@@ -35,6 +35,9 @@ fi
 # run the python scripts
 cd /vol/bitbucket/${USER}/HeartRateForecasting
 
+pwd
+ls 
+
 echo "STEP 2"
 python3 /vol/bitbucket/${USER}/HeartRateForecasting/heart_rate_dataset.py
 echo "STEP 3"
