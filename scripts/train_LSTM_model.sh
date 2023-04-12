@@ -42,4 +42,4 @@ cd /vol/bitbucket/${USER}/HeartRateForecasting
 
 
 echo "STEP 2"
-python3 /vol/bitbucket/${USER}/HeartRateForecasting/models/LSTM_autoregressive_model.py
+python3 /vol/bitbucket/${USER}/HeartRateForecasting/models/LSTM_model.py

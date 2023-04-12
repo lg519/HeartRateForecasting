@@ -80,4 +80,4 @@ if __name__ == "__main__":
     history = compile_and_fit(feedback_model, window)
     # window.plot(feedback_model)
 
-    feedback_model.save("models/LSTM_autoregressive_model")
+    feedback_model.save("models/LSTM_3_layers_model")
