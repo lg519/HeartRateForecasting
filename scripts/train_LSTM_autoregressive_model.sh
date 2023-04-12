@@ -36,8 +36,8 @@ if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
 fi
 
 echo "CUDA version $(nvcc --version | grep 'release' | awk '{print $5}') is installed"
+echo $CUDA_HOME
 
-whereis cuda
 
 # run the python scripts
 cd /vol/bitbucket/${USER}/HeartRateForecasting
