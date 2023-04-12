@@ -39,6 +39,4 @@ pwd
 ls 
 
 echo "STEP 2"
-python3 /vol/bitbucket/${USER}/HeartRateForecasting/heart_rate_dataset.py
-echo "STEP 3"
 python3 /vol/bitbucket/${USER}/HeartRateForecasting/LSTM_autoregressive_model.py
