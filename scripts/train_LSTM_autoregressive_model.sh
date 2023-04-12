@@ -37,6 +37,7 @@ fi
 
 echo "CUDA version $(nvcc --version | grep 'release' | awk '{print $5}') is installed"
 
+whereis cuda
 
 # run the python scripts
 cd /vol/bitbucket/${USER}/HeartRateForecasting
