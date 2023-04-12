@@ -39,4 +39,4 @@ pwd
 ls 
 
 echo "STEP 2"
-python3 /vol/bitbucket/${USER}/HeartRateForecasting/LSTM_autoregressive_model.py
+python3 /vol/bitbucket/${USER}/HeartRateForecasting/test_gpu.py
