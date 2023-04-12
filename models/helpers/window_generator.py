@@ -180,7 +180,7 @@ class WindowGenerator:
                 sequence_length=self.total_window_size,
                 sequence_stride=1,
                 shuffle=True,
-                batch_size=1024,
+                batch_size=128,
             )
             # print first element of dataset
             # for x in ds.take(1):
