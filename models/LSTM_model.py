@@ -74,4 +74,4 @@ if __name__ == "__main__":
     history = compile_and_fit(feedback_model, window)
     # window.plot(feedback_model)
 
-    feedback_model.save("models/LSTM_model")
+    feedback_model.save("saved_models/LSTM_model")

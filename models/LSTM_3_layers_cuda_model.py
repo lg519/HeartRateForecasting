@@ -90,4 +90,4 @@ if __name__ == "__main__":
 
     history = compile_and_fit(feedback_model, window)
 
-    feedback_model.save("models/LSTM_3_layers_cuda_model")
+    feedback_model.save("saved_models/LSTM_3_layers_cuda_model")
