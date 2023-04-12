@@ -18,20 +18,19 @@ class StackedLSTM(tf.keras.layers.Layer):
         self.num_layers = num_layers
         self.dropout_rate = dropout_rate
 
-        self.dropout_layers = [
-            tf.keras.layers.Dropout(dropout_rate) for _ in range(num_layers)
-        ]
         self.lstm_layers = [
             tf.keras.layers.LSTM(
                 units,
                 return_sequences=True,
                 return_state=True,
+                dropout=self.dropout_rate,
             )
             for _ in range(num_layers - 1)
         ] + [
             tf.keras.layers.LSTM(
                 units,
                 return_state=True,
+                dropout=self.dropout_rate,
             )
         ]
 
@@ -41,8 +40,7 @@ class StackedLSTM(tf.keras.layers.Layer):
 
         x = inputs
         new_states = []
-        for i, (dropout, lstm) in enumerate(zip(self.dropout_layers, self.lstm_layers)):
-            x = dropout(x, training=training)
+        for i, lstm in enumerate(self.lstm_layers):
             x, h, c = lstm(x, initial_state=states[i], training=training)
             new_states.append((h, c))
 
