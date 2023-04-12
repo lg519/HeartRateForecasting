@@ -38,6 +38,9 @@ fi
 echo "CUDA version $(nvcc --version | grep 'release' | awk '{print $5}') is installed"
 dirname $(dirname $(which nvcc))
 
+export XLA_FLAGS=--xla_gpu_cuda_data_dir=/vol/cuda/11.2.1-cudnn8.1.0.77
+
+
 
 
 # run the python scripts
