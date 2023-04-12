@@ -36,7 +36,8 @@ if [ -f /vol/cuda/11.2.1-cudnn8.1.0.77/setup.sh ]
 fi
 
 echo "CUDA version $(nvcc --version | grep 'release' | awk '{print $5}') is installed"
-echo $CUDA_HOME
+dirname $(dirname $(which nvcc))
+
 
 
 # run the python scripts
