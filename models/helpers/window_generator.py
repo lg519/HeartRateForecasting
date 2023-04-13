@@ -11,7 +11,7 @@ train_df, val_df, test_df = preprocess_data(df)
 
 # Set number of output features
 num_input_features = 2
-num_output_features = 1
+num_output_features = 2
 
 
 # Set input_width
