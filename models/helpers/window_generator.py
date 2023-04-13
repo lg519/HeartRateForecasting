@@ -147,27 +147,26 @@ class WindowGenerator:
                     zorder=-10,
                 )
 
-                if plot_col == "HR":
+                plt.scatter(
+                    self.label_indices,
+                    labels[n, :, plot_col_index],
+                    edgecolors="k",
+                    label=f"{plot_col} Labels" if n == 0 else None,
+                    c="#2ca02c",
+                    s=64,
+                )
+
+                if model is not None:
+                    predictions = model(inputs)
                     plt.scatter(
                         self.label_indices,
-                        labels[n, :, plot_col_index],
+                        predictions[n, :, plot_col_index],
+                        marker="X",
                         edgecolors="k",
-                        label=f"{plot_col} Labels" if n == 0 else None,
-                        c="#2ca02c",
+                        label=f"{plot_col} Predictions" if n == 0 else None,
+                        c="#ff7f0e",
                         s=64,
                     )
-
-                    if model is not None:
-                        predictions = model(inputs)
-                        plt.scatter(
-                            self.label_indices,
-                            predictions[n, :, plot_col_index],
-                            marker="X",
-                            edgecolors="k",
-                            label=f"{plot_col} Predictions" if n == 0 else None,
-                            c="#ff7f0e",
-                            s=64,
-                        )
 
                 if n == 0:
                     plt.legend()

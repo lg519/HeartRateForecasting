@@ -18,13 +18,20 @@ def preprocess_data(df):
     # Extract breathing rate data
     breathing_rate_data = df["BR"]
 
+    print(len(heart_rate_data))
+
     # Apply the has_zero function to each heart rate row
     zero_check_hr = heart_rate_data.apply(has_zero)
+    zero_check_br = breathing_rate_data.apply(has_zero)
 
     # Filter the rows based on the check results
     heart_rate_data = heart_rate_data[~zero_check_hr].reset_index(drop=True)
     breathing_rate_data = breathing_rate_data[~zero_check_hr].reset_index(drop=True)
+    print(len(heart_rate_data))
 
+    heart_rate_data = heart_rate_data[~zero_check_br].reset_index(drop=True)
+    breathing_rate_data = breathing_rate_data[~zero_check_br].reset_index(drop=True)
+    print(len(heart_rate_data))
     # Scale the data between -1 and 1
     scaler = MinMaxScaler(feature_range=(-1, 1))
     heart_rate_data = [scaler.fit_transform(hr) for hr in heart_rate_data]

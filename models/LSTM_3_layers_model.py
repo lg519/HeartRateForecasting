@@ -73,7 +73,7 @@ if __name__ == "__main__":
         input_width=input_width, label_width=label_width, shift=shift
     )
 
-    feedback_model = FeedBack(units=128, out_steps=label_width)
+    feedback_model = FeedBack(units=32, out_steps=label_width)
 
     feedback_model.build(input_shape=(None, input_width, num_input_features))
     print(feedback_model.summary())
