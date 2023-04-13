@@ -3,14 +3,16 @@ import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
-from preprocess_data import preprocess_data
+from .preprocess_data import preprocess_data
 
 df = pd.read_pickle("SportDB.pkl")
 
 train_df, val_df, test_df = preprocess_data(df)
 
 # Set number of output features
-num_features = 1
+num_input_features = 2
+num_output_features = 1
+
 
 # Set input_width
 input_width = 60

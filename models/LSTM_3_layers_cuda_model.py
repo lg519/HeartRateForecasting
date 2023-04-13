@@ -3,7 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from helpers.window_generator import (
     WindowGenerator,
-    num_features,
+    num_output_features,
+    num_input_features,
     input_width,
     label_width,
     shift,
@@ -52,7 +53,7 @@ class FeedBack(tf.keras.Model):
         super().__init__()
         self.out_steps = out_steps
         self.stacked_lstm = StackedLSTM(units, num_layers, dropout_rate)
-        self.dense = tf.keras.layers.Dense(num_features)
+        self.dense = tf.keras.layers.Dense(num_output_features)
 
     def warmup(self, inputs):
         x, states = self.stacked_lstm(inputs)
@@ -85,7 +86,7 @@ if __name__ == "__main__":
 
     feedback_model = FeedBack(units=32, out_steps=label_width)
 
-    feedback_model.build(input_shape=(None, input_width, num_features))
+    feedback_model.build(input_shape=(None, input_width, num_input_features))
     print(feedback_model.summary())
 
     history = compile_and_fit(feedback_model, window)

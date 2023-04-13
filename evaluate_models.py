@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from models.helpers.window_generator import (
     WindowGenerator,
-    num_features,
+    num_output_features,
     input_width,
     label_width,
     shift,

@@ -3,7 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from helpers.window_generator import (
     WindowGenerator,
-    num_features,
+    num_output_features,
+    num_input_features,
     input_width,
     label_width,
     shift,
@@ -19,11 +20,12 @@ class FeedBack(tf.keras.Model):
         self.lstm_cell = tf.keras.layers.LSTMCell(units)
         # Also wrap the LSTMCell in an RNN to simplify the `warmup` method.
         self.lstm_rnn = tf.keras.layers.RNN(self.lstm_cell, return_state=True)
-        self.dense = tf.keras.layers.Dense(num_features)
+        self.dense = tf.keras.layers.Dense(num_output_features)
 
     def warmup(self, inputs):
         # inputs.shape => (batch, time, features)
         # x.shape => (batch, lstm_units)
+        print("inputs.shape:", inputs.shape)
         x, *state = self.lstm_rnn(inputs)
 
         # predictions.shape => (batch, features)
@@ -68,7 +70,7 @@ if __name__ == "__main__":
 
     feedback_model = FeedBack(units=32, out_steps=label_width)
 
-    feedback_model.build(input_shape=(None, input_width, num_features))
+    feedback_model.build(input_shape=(None, input_width, num_input_features))
     print(feedback_model.summary())
 
     history = compile_and_fit(feedback_model, window)
