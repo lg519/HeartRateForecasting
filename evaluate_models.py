@@ -11,9 +11,9 @@ from models.helpers.window_generator import (
 
 
 # load the model
-model = tf.keras.models.load_model("saved_models/LSTM_autoregressive_model")
+model = tf.keras.models.load_model("saved_models/LSTM_model")
 
 
 # Create a window
 window = WindowGenerator(input_width=input_width, label_width=label_width, shift=shift)
-window.plot(model)
+window.plot(model, max_subplots=10)

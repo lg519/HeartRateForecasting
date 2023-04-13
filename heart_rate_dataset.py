@@ -63,7 +63,7 @@ df = pd.DataFrame(data_list)
 
 
 # save the dataframe to a csv file
-df.to_pickle("SportDB.pkl")
+# df.to_pickle("SportDB.pkl")
 
 
 # demographics_columns = [
@@ -87,12 +87,17 @@ df.to_pickle("SportDB.pkl")
 # plt.show()
 
 
-# heart_rate_data = df["HR"]
-# sample_index = 0  # Change this value to select a different sample
-# heart_rate_sample = heart_rate_data.iloc[sample_index]
+heart_rate_data = df["HR"]
+sample_index = 0  # Change this value to select a different sample
+heart_rate_sample = heart_rate_data.iloc[sample_index]
 
-# plt.plot(heart_rate_sample)
-# plt.title("Heart Rate Sample")
-# plt.xlabel("Time")
-# plt.ylabel("Heart Rate")
-# plt.show()
+breathing_rate_data = df["BR"]
+breathing_rate_sample = breathing_rate_data.iloc[sample_index]
+
+
+# Plot the heart rate and breathing rate time series
+plt.plot(heart_rate_sample)
+
+plt.plot(breathing_rate_sample)
+plt.legend(["Heart rate", "Breathing rate"])
+plt.show()
