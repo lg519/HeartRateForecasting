@@ -11,11 +11,11 @@ train_df, val_df, test_df, hr_scaler, br_scaler = preprocess_data(df)
 
 # Set number of output features
 num_input_features = 2
-num_output_features = 2
+num_output_features = 1
 
 
 # Set input_width
-input_width = 60
+input_width = 120
 label_width = 30
 shift = 30
 
@@ -77,7 +77,10 @@ class WindowGenerator:
 
     def split_window(self, features):
         inputs = features[:, self.input_slice, :]
-        labels = features[:, self.labels_slice, :]
+        labels = features[:, self.labels_slice, 0]
+
+        # Add extra dimension to the labels tensor
+        labels = tf.expand_dims(labels, axis=-1)
 
         # if self.label_columns is not None:
         #     labels = tf.stack(
@@ -144,6 +147,7 @@ class WindowGenerator:
                 if plot_col_index == 0:
                     scaler = self.hr_scaler
                 elif plot_col_index == 1:
+                    break
                     scaler = self.br_scaler
                 else:
                     raise ValueError(

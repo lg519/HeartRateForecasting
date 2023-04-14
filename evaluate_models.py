@@ -11,7 +11,7 @@ from models.helpers.window_generator import (
 
 
 # load the model
-model = tf.keras.models.load_model("saved_models/LSTM_model")
+model = tf.keras.models.load_model("saved_models/LSTM_single_shot_model")
 
 
 # Create a window
