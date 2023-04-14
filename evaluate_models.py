@@ -16,4 +16,4 @@ model = tf.keras.models.load_model("saved_models/LSTM_model")
 
 # Create a window
 window = WindowGenerator(input_width=input_width, label_width=label_width, shift=shift)
-window.plot(model, max_subplots=10)
+window.plot(model, max_subplots=3)

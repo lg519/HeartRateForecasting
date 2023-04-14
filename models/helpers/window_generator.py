@@ -7,7 +7,7 @@ from .preprocess_data import preprocess_data
 
 df = pd.read_pickle("SportDB.pkl")
 
-train_df, val_df, test_df = preprocess_data(df)
+train_df, val_df, test_df, hr_scaler, br_scaler = preprocess_data(df)
 
 # Set number of output features
 num_input_features = 2
@@ -29,7 +29,8 @@ class WindowGenerator:
         train_df=train_df,
         val_df=val_df,
         test_df=test_df,
-        label_columns=None,
+        hr_scaler=hr_scaler,
+        br_scaler=br_scaler,
     ):
         # Set random seed
         tf.random.set_seed(1)
@@ -38,6 +39,10 @@ class WindowGenerator:
         self.train_df = train_df
         self.val_df = val_df
         self.test_df = test_df
+
+        # Store the scalers
+        self.hr_scaler = hr_scaler
+        self.br_scaler = br_scaler
 
         # Work out the label column indices.
         # self.label_columns = label_columns
@@ -136,12 +141,23 @@ class WindowGenerator:
         for n in range(max_subplots):
             for i, plot_col in enumerate(plot_cols):
                 plot_col_index = i
+                if plot_col_index == 0:
+                    scaler = self.hr_scaler
+                elif plot_col_index == 1:
+                    scaler = self.br_scaler
+                else:
+                    raise ValueError(
+                        f"plot_col_index must be 0 or 1, not {plot_col_index}"
+                    )
+
                 plt.subplot(max_subplots, len(plot_cols), n * len(plot_cols) + i + 1)
                 plt.ylabel(f"{plot_col}")
 
                 plt.plot(
                     self.input_indices,
-                    inputs[n, :, plot_col_index],
+                    scaler.inverse_transform(
+                        inputs[n, :, plot_col_index].numpy().reshape(-1, 1)
+                    ),
                     label=f"{plot_col} Inputs" if n == 0 else None,
                     marker=".",
                     zorder=-10,
@@ -149,7 +165,9 @@ class WindowGenerator:
 
                 plt.scatter(
                     self.label_indices,
-                    labels[n, :, plot_col_index],
+                    scaler.inverse_transform(
+                        labels[n, :, plot_col_index].numpy().reshape(-1, 1)
+                    ),
                     edgecolors="k",
                     label=f"{plot_col} Labels" if n == 0 else None,
                     c="#2ca02c",
@@ -160,7 +178,9 @@ class WindowGenerator:
                     predictions = model(inputs)
                     plt.scatter(
                         self.label_indices,
-                        predictions[n, :, plot_col_index],
+                        scaler.inverse_transform(
+                            predictions[n, :, plot_col_index].numpy().reshape(-1, 1)
+                        ),
                         marker="X",
                         edgecolors="k",
                         label=f"{plot_col} Predictions" if n == 0 else None,
