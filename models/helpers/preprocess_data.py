@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 # Function to check if there's any nested array with a 0
 def filter_data(arr):
     for nested_arr in arr:
+        # If the nested array contains a 0 or a number greater than 1000, return True
         if nested_arr[0] == 0 or nested_arr[0] > 1000:
             return True
 
@@ -16,8 +17,16 @@ def filter_data(arr):
 def preprocess_data(df):
     # Extract heart rate data
     heart_rate_data = df["HR"]
-    # Extract breathing rate data
+    print(f"first sample of HR data shape is {df['HR'][0].shape}")
+    # Extract breat hing rate data
     breathing_rate_data = df["BR"]
+    print(f"first sample of BR data shape is {df['BR'][0].shape}")
+    # Extract ECG data
+    ecg_data = df["ECG"]
+    print(f"first sample of ECG data shape is {df['ECG'][0].shape}")
+    # Extract RR data
+    rr_data = df["RR"]
+    print(f"first sample of RR data shape is {df['RR'][0].shape}")
 
     # print(len(heart_rate_data))
 
@@ -88,4 +97,6 @@ if __name__ == "__main__":
     # Example usage
     df = pd.read_pickle("SportDB.pkl")
     train_df, val_df, test_df, _, _ = preprocess_data(df)
-    plot_samples(train_df)
+    print(len(train_df))
+    print(train_df[0].shape)
+    # plot_samples(train_df)

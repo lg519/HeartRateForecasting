@@ -76,7 +76,7 @@ df = pd.DataFrame(data_list)
 #     "weekly_training",
 # ]
 
-# Convert columns to numeric types
+# # Convert columns to numeric types
 # for column in demographics_columns:
 #     df[column] = pd.to_numeric(df[column], errors="coerce")
 
@@ -88,16 +88,18 @@ df = pd.DataFrame(data_list)
 
 
 # heart_rate_data = df["HR"]
-# sample_index = 0  # Change this value to select a different sample
+# sample_index = 1  # Change this value to select a different sample
 # heart_rate_sample = heart_rate_data.iloc[sample_index]
 
 # breathing_rate_data = df["BR"]
 # breathing_rate_sample = breathing_rate_data.iloc[sample_index]
 
+# ecg_data = df["ECG"]
+# ecg_sample = ecg_data.iloc[sample_index]
 
-# # Plot the heart rate and breathing rate time series
-# plt.plot(heart_rate_sample)
-
-# plt.plot(breathing_rate_sample)
+# # Plot the heart rate and breathing rate and ecg time series
+# # plt.plot(heart_rate_sample)
+# # plt.plot(ecg_sample)
+# # plt.plot(breathing_rate_sample)
 # plt.legend(["Heart rate", "Breathing rate"])
 # plt.show()
