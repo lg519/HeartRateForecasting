@@ -76,4 +76,28 @@ if __name__ == "__main__":
     history = compile_and_fit(feedback_model, window)
     # window.plot(feedback_model)
 
-    feedback_model.save("saved_models/LSTM_model")
+    run_model = tf.function(lambda x: feedback_model(x))
+    # This is important, let's fix the input size.
+    BATCH_SIZE = 1
+    STEPS = 120
+    FEATURES = 1
+    concrete_func = run_model.get_concrete_function(
+        tf.TensorSpec([BATCH_SIZE, STEPS, FEATURES])
+    )
+
+    # Save the model
+    feedback_model.save(
+        "saved_models/LSTM_autoregressive", save_format="tf", signatures=concrete_func
+    )
+
+    # Convert the model to TFLite
+    converter = tf.lite.TFLiteConverter.from_saved_model(
+        "saved_models/LSTM_autoregressive"
+    )
+
+    # Convert the model
+    tflite_model = converter.convert()
+
+    # Save the TFLite model
+    with open("saved_models/LSTM_autoregressive/LSTM_autoregressive.tflite", "wb") as f:
+        f.write(tflite_model)

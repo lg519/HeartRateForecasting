@@ -58,6 +58,10 @@ def preprocess_data(df):
     hr_scaler.fit(concatenated_hr)
     br_scaler.fit(concatenated_br)
 
+    # Print minimum and maximum value of hr_scaler
+    print("Minimum value hr_scaler:", hr_scaler.data_min_)
+    print("Maximum value hr_scaler:", hr_scaler.data_max_)
+
     # Transform the data
     heart_rate_data = [hr_scaler.transform(hr) for hr in heart_rate_data]
     breathing_rate_data = [br_scaler.transform(br) for br in breathing_rate_data]
