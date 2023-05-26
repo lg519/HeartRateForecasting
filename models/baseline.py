@@ -14,7 +14,10 @@ class Baseline(tf.keras.Model):
 
     def call(self, inputs):
         last_value = inputs[:, -1:, 0]  # Get the last value of the HR data
+        # print(last_value.shape)
         repeated_last_value = tf.repeat(last_value, self.label_width, axis=1)
+        # print(repeated_last_value.shape)
+        # print(tf.expand_dims(repeated_last_value, axis=-1).shape)
         return tf.expand_dims(repeated_last_value, axis=-1)
 
 
@@ -38,3 +41,11 @@ if __name__ == "__main__":
 
     # Save the baseline model
     baseline_model.save("saved_models/baseline")
+
+    # Convert the model to TFLite
+    converter = tf.lite.TFLiteConverter.from_saved_model("saved_models/baseline")
+    tflite_model = converter.convert()
+
+    # Save the TFLite model
+    with open("saved_models/baseline/baseline.tflite", "wb") as f:
+        f.write(tflite_model)

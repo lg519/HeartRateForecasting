@@ -68,6 +68,9 @@ def preprocess_data(df):
         for hr, br in zip(heart_rate_data, breathing_rate_data)
     ]
 
+    # Only use Heart Rate data. TODO: use also other data for experiments in the report
+    combined_data = heart_rate_data
+
     # Split the data into train, validation, and test sets
     n = len(combined_data)
     train_df = combined_data[0 : int(n * 0.7)]

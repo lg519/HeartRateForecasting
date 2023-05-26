@@ -10,7 +10,7 @@ df = pd.read_pickle("SportDB.pkl")
 train_df, val_df, test_df, hr_scaler, br_scaler = preprocess_data(df)
 
 # Set number of output features
-num_input_features = 2
+num_input_features = 1
 num_output_features = 1
 
 
