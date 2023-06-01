@@ -66,40 +66,69 @@ df = pd.DataFrame(data_list)
 # df.to_pickle("SportDB.pkl")
 
 
-# demographics_columns = [
-#     "gender",
-#     "age",
-#     "weight",
-#     "height",
-#     "smoking",
-#     "alcohol",
-#     "weekly_training",
-# ]
+demographics_columns = [
+    "gender",
+    "age",
+    "weight",
+    "height",
+    "smoking",
+    "alcohol",
+    "weekly_training",
+]
 
-# # Convert columns to numeric types
-# for column in demographics_columns:
-#     df[column] = pd.to_numeric(df[column], errors="coerce")
+# Convert columns to numeric types
+for column in demographics_columns:
+    df[column] = pd.to_numeric(df[column], errors="coerce")
 
-# # Visualize demographic data using Seaborn's pairplot
-# sns.pairplot(
-#     df[demographics_columns].dropna()
-# )  # Remove rows with NaN values for plotting
-# plt.show()
+# Visualize demographic data using Seaborn's pairplot
+sns.pairplot(
+    df[demographics_columns].dropna()
+)  # Remove rows with NaN values for plotting
+plt.show()
 
 
-# heart_rate_data = df["HR"]
-# sample_index = 1  # Change this value to select a different sample
-# heart_rate_sample = heart_rate_data.iloc[sample_index]
+heart_rate_data = df["HR"]
+sample_index = 67  # Change this value to select a different sample
+heart_rate_sample = heart_rate_data.iloc[sample_index]
 
-# breathing_rate_data = df["BR"]
-# breathing_rate_sample = breathing_rate_data.iloc[sample_index]
+breathing_rate_data = df["BR"]
+breathing_rate_sample = breathing_rate_data.iloc[sample_index]
 
-# ecg_data = df["ECG"]
-# ecg_sample = ecg_data.iloc[sample_index]
+ecg_data = df["ECG"]
+ecg_sample = ecg_data.iloc[sample_index]
 
-# # Plot the heart rate and breathing rate and ecg time series
-# # plt.plot(heart_rate_sample)
-# # plt.plot(ecg_sample)
-# # plt.plot(breathing_rate_sample)
-# plt.legend(["Heart rate", "Breathing rate"])
-# plt.show()
+rr_data = df["RR"]
+rr_sample = rr_data.iloc[sample_index]
+
+## Create a subplot with 2 rows and 2 columns
+fig, axs = plt.subplots(2, 2, figsize=(10, 8))
+
+# Plot 1: Heart Rate
+axs[0, 0].plot(heart_rate_sample)
+axs[0, 0].set_title("Heart Rate")
+axs[0, 0].set_xlabel("Sample")
+axs[0, 0].set_ylabel("Rate")
+
+# Plot 2: ECG
+axs[0, 1].plot(ecg_sample)
+axs[0, 1].set_title("ECG")
+axs[0, 1].set_xlabel("Sample")
+axs[0, 1].set_ylabel("Value")
+
+# Plot 3: Breathing Rate
+axs[1, 0].plot(breathing_rate_sample)
+axs[1, 0].set_title("Breathing Rate")
+axs[1, 0].set_xlabel("Sample")
+axs[1, 0].set_ylabel("Rate")
+
+# Plot 4: RR Interval
+axs[1, 1].plot(rr_sample)
+axs[1, 1].set_title("RR Interval")
+axs[1, 1].set_xlabel("Sample")
+axs[1, 1].set_ylabel("Interval")
+
+# Adjust spacing between subplots
+plt.tight_layout()
+
+# Show the plot
+plt.show()
