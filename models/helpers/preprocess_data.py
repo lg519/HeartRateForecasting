@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
+from scipy.signal import resample
 
 
 # Function to check if there's any nested array with a 0
@@ -18,7 +19,7 @@ def preprocess_data(df):
     # Extract heart rate data
     heart_rate_data = df["HR"]
     print(f"first sample of HR data shape is {df['HR'][0].shape}")
-    # Extract breat hing rate data
+    # Extract breathing rate data
     breathing_rate_data = df["BR"]
     print(f"first sample of BR data shape is {df['BR'][0].shape}")
     # Extract ECG data
@@ -28,52 +29,83 @@ def preprocess_data(df):
     rr_data = df["RR"]
     print(f"first sample of RR data shape is {df['RR'][0].shape}")
 
-    # print(len(heart_rate_data))
-
     # Filter the rows
     zero_check_hr = heart_rate_data.apply(filter_data)
     heart_rate_data = heart_rate_data[~zero_check_hr].reset_index(drop=True)
     breathing_rate_data = breathing_rate_data[~zero_check_hr].reset_index(drop=True)
-    # print(len(heart_rate_data))
+    # ecg_data = ecg_data[~zero_check_hr].reset_index(drop=True)
+    rr_data = rr_data[~zero_check_hr].reset_index(drop=True)
+    print(len(heart_rate_data))
 
     zero_check_br = breathing_rate_data.apply(filter_data)
     heart_rate_data = heart_rate_data[~zero_check_br].reset_index(drop=True)
     breathing_rate_data = breathing_rate_data[~zero_check_br].reset_index(drop=True)
-    # print(len(heart_rate_data))
+    # ecg_data = ecg_data[~zero_check_br].reset_index(drop=True)
+    rr_data = rr_data[~zero_check_br].reset_index(drop=True)
+    print(len(heart_rate_data))
+
+    zero_check_rr = rr_data.apply(filter_data)
+    heart_rate_data = heart_rate_data[~zero_check_rr].reset_index(drop=True)
+    breathing_rate_data = breathing_rate_data[~zero_check_rr].reset_index(drop=True)
+    # ecg_data = ecg_data[~zero_check_rr].reset_index(drop=True)
+    rr_data = rr_data[~zero_check_rr].reset_index(drop=True)
+    print(len(heart_rate_data))
 
     # Concatenate each row of HR and BR data
     concatenated_hr = np.concatenate(heart_rate_data)
     concatenated_br = np.concatenate(breathing_rate_data)
-    # print(concatenated_br)
-
-    # Plot the concatenated data
-    # plt.plot(concatenated_br)
-    # plt.show()
+    concatenated_rr = np.concatenate(rr_data)
 
     # Scale the data
     hr_scaler = MinMaxScaler()
     br_scaler = MinMaxScaler()
+    rr_scaler = MinMaxScaler()
 
     # Fit the scaler to the concatenated data
     hr_scaler.fit(concatenated_hr)
     br_scaler.fit(concatenated_br)
+    rr_scaler.fit(concatenated_rr)
 
     # Print minimum and maximum value of hr_scaler
-    print("Minimum value hr_scaler:", hr_scaler.data_min_)
-    print("Maximum value hr_scaler:", hr_scaler.data_max_)
+    # print("Minimum value hr_scaler:", hr_scaler.data_min_)
+    # print("Maximum value hr_scaler:", hr_scaler.data_max_)
 
     # Transform the data
     heart_rate_data = [hr_scaler.transform(hr) for hr in heart_rate_data]
     breathing_rate_data = [br_scaler.transform(br) for br in breathing_rate_data]
+    rr_data = [rr_scaler.transform(rr) for rr in rr_data]
+
+    # Select first 150 samples
+    # hr_selected = heart_rate_data[1]
+    # br_selected = breathing_rate_data[1]
+    # rr_selected = rr_data[1]
+
+    # # Plotting each array
+    # plt.figure(figsize=(14, 10))
+
+    # plt.subplot(3, 1, 1)
+    # plt.plot(hr_selected)
+    # plt.title("Heart Rate Data")
+
+    # plt.subplot(3, 1, 2)
+    # plt.plot(br_selected)
+    # plt.title("Breathing Rate Data")
+
+    # plt.subplot(3, 1, 3)
+    # plt.plot(rr_selected)
+    # plt.title("RR Data")
+
+    # plt.tight_layout()
+    # plt.show()
 
     # Combine HR and BR data
     combined_data = [
-        np.column_stack((hr, br))
-        for hr, br in zip(heart_rate_data, breathing_rate_data)
+        np.column_stack((hr, br, rr))
+        for hr, br, rr in zip(heart_rate_data, breathing_rate_data, rr_data)
     ]
 
     # Only use Heart Rate data. TODO: use also other data for experiments in the report
-    combined_data = heart_rate_data
+    # combined_data = heart_rate_data
 
     # Split the data into train, validation, and test sets
     n = len(combined_data)
@@ -81,7 +113,7 @@ def preprocess_data(df):
     val_df = combined_data[int(n * 0.7) : int(n * 0.9)]
     test_df = combined_data[int(n * 0.9) :]
 
-    return train_df, val_df, test_df, hr_scaler, br_scaler
+    return train_df, val_df, test_df, hr_scaler, br_scaler, rr_scaler
 
 
 def plot_samples(train_df, num_samples=3):
@@ -103,7 +135,7 @@ def plot_samples(train_df, num_samples=3):
 if __name__ == "__main__":
     # Example usage
     df = pd.read_pickle("SportDB.pkl")
-    train_df, val_df, test_df, _, _ = preprocess_data(df)
+    train_df, val_df, test_df, _, _, _ = preprocess_data(df)
     print(len(train_df))
     print(train_df[0].shape)
     # plot_samples(train_df)
