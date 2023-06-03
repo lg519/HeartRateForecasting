@@ -3,11 +3,11 @@ import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
-from .preprocess_data import preprocess_data
+from preprocess_data import preprocess_data
 
 df = pd.read_pickle("SportDB.pkl")
 
-train_df, val_df, test_df, hr_scaler, br_scaler = preprocess_data(df)
+train_df, val_df, test_df, hr_scaler, br_scaler, rr_scaler = preprocess_data(df)
 
 # Set number of output features
 num_input_features = 1
@@ -31,6 +31,7 @@ class WindowGenerator:
         test_df=test_df,
         hr_scaler=hr_scaler,
         br_scaler=br_scaler,
+        rr_scaler=rr_scaler,
     ):
         # Set random seed
         tf.random.set_seed(1)
@@ -43,6 +44,7 @@ class WindowGenerator:
         # Store the scalers
         self.hr_scaler = hr_scaler
         self.br_scaler = br_scaler
+        self.rr_scaler = rr_scaler
 
         # Work out the label column indices.
         # self.label_columns = label_columns
@@ -77,9 +79,11 @@ class WindowGenerator:
 
     def split_window(self, features):
         inputs = features[:, self.input_slice, :]
+
+        # Change the last dimention of this vector from 0 to : to plot multi-output sources with window generator
         labels = features[:, self.labels_slice, 0]
 
-        # Add extra dimension to the labels tensor
+        # Add extra dimension to the labels tensor (only needed for uni-output sources)
         labels = tf.expand_dims(labels, axis=-1)
 
         # if self.label_columns is not None:
@@ -100,6 +104,8 @@ class WindowGenerator:
 
     def make_dataset(self, data):
         datasets = []
+
+        # print(f"data shape is {len(data[0])}")
 
         for row in data:
             row = np.array(row, dtype=np.float32)
@@ -137,7 +143,7 @@ class WindowGenerator:
 
         return merged_ds
 
-    def plot(self, model=None, plot_cols=["HR", "BR"], max_subplots=3):
+    def plot(self, model=None, plot_cols=["HR", "BR", "RR"], max_subplots=3):
         inputs, labels = self.example
         plt.figure(figsize=(12, 8))
 
@@ -147,16 +153,21 @@ class WindowGenerator:
                 if plot_col_index == 0:
                     scaler = self.hr_scaler
                 elif plot_col_index == 1:
+                    # Remove break for multi-output plots
                     break
                     scaler = self.br_scaler
+                elif plot_col_index == 2:
+                    # Remove break for multi-output plots
+                    break
+                    scaler = self.rr_scaler
                 else:
                     raise ValueError(
-                        f"plot_col_index must be 0 or 1, not {plot_col_index}"
+                        f"plot_col_index must be 0, 1 or 2, not {plot_col_index}"
                     )
 
                 plt.subplot(max_subplots, len(plot_cols), n * len(plot_cols) + i + 1)
                 plt.ylabel(f"{plot_col}")
-
+                # print(inputs.shape)
                 plt.plot(
                     self.input_indices,
                     scaler.inverse_transform(
@@ -224,7 +235,7 @@ class WindowGenerator:
 
 
 if __name__ == "__main__":
-    print(f"trian_df shape: {train_df[0].shape}")
+    print(f"trian_df[0] shape: {train_df[0].shape}")
     window = WindowGenerator(
         input_width=input_width, label_width=label_width, shift=shift
     )
