@@ -100,32 +100,32 @@ ecg_sample = ecg_data.iloc[sample_index]
 rr_data = df["RR"]
 rr_sample = rr_data.iloc[sample_index]
 
-## Create a subplot with 2 rows and 2 columns
+# Create a subplot with 2 rows and 2 columns
 fig, axs = plt.subplots(2, 2, figsize=(10, 8))
 
 # Plot 1: Heart Rate
 axs[0, 0].plot(heart_rate_sample)
 axs[0, 0].set_title("Heart Rate")
 axs[0, 0].set_xlabel("Sample")
-axs[0, 0].set_ylabel("Rate")
+axs[0, 0].set_ylabel("Beats per minute (bpm)")
 
 # Plot 2: ECG
 axs[0, 1].plot(ecg_sample)
 axs[0, 1].set_title("ECG")
 axs[0, 1].set_xlabel("Sample")
-axs[0, 1].set_ylabel("Value")
+axs[0, 1].set_ylabel("Amplitude (mV)")
 
 # Plot 3: Breathing Rate
 axs[1, 0].plot(breathing_rate_sample)
 axs[1, 0].set_title("Breathing Rate")
 axs[1, 0].set_xlabel("Sample")
-axs[1, 0].set_ylabel("Rate")
+axs[1, 0].set_ylabel("Cycles per minute (cpm)")
 
 # Plot 4: RR Interval
 axs[1, 1].plot(rr_sample)
 axs[1, 1].set_title("RR Interval")
 axs[1, 1].set_xlabel("Sample")
-axs[1, 1].set_ylabel("Interval")
+axs[1, 1].set_ylabel("Milliseconds (ms)")
 
 # Adjust spacing between subplots
 plt.tight_layout()
