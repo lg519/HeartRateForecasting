@@ -16,18 +16,46 @@ def filter_data(arr):
 
 
 def preprocess_data(df):
+    # Extract categorical data
+    cat_cols = [
+        "gender",
+        "age",
+        "weight",
+        "height",
+        "smoking",
+        "alcohol",
+        "weekly_training",
+    ]
+    cat_data = df[cat_cols]
+
+    # Replace 'NA' strings with numpy NaN
+    cat_data = cat_data.replace("NA", np.nan)
+
+    # Apply mode imputation to deal with missing values
+    cat_data.fillna(cat_data.mode().iloc[0], inplace=True)
+
+    # Fill missing values using mode imputation
+    for col in cat_cols:
+        cat_data[col].fillna(cat_data[col].mode()[0])
+
+    # Convert data to float
+    cat_data = cat_data.astype(float)
+
+    print(cat_data.head())
     # Extract heart rate data
     heart_rate_data = df["HR"]
-    print(f"first sample of HR data shape is {df['HR'][0].shape}")
+    # print(f"first sample of HR data shape is {df['HR'][0].shape}")
     # Extract breathing rate data
     breathing_rate_data = df["BR"]
-    print(f"first sample of BR data shape is {df['BR'][0].shape}")
+    # print(f"first sample of BR data shape is {df['BR'][0].shape}")
     # Extract ECG data
     ecg_data = df["ECG"]
-    print(f"first sample of ECG data shape is {df['ECG'][0].shape}")
+    # print(f"first sample of ECG data shape is {df['ECG'][0].shape}")
     # Extract RR data
     rr_data = df["RR"]
-    print(f"first sample of RR data shape is {df['RR'][0].shape}")
+    # print(f"first sample of RR data shape is {df['RR'][0].shape}")
+
+    print(len(heart_rate_data))
 
     # Filter the rows
     zero_check_hr = heart_rate_data.apply(filter_data)
@@ -107,13 +135,29 @@ def preprocess_data(df):
     # Only use Heart Rate data. TODO: use also other data for experiments in the report
     # combined_data = heart_rate_data
 
-    # Split the data into train, validation, and test sets
+    # Split the cardiorespiratory data into train, validation, and test sets
     n = len(combined_data)
     train_df = combined_data[0 : int(n * 0.7)]
     val_df = combined_data[int(n * 0.7) : int(n * 0.9)]
     test_df = combined_data[int(n * 0.9) :]
 
-    return train_df, val_df, test_df, hr_scaler, br_scaler, rr_scaler
+    # Split the categorical data into train, validation, and test sets
+    n = len(cat_data)
+    train_cat_data = cat_data[0 : int(n * 0.7)]
+    val_cat_data = cat_data[int(n * 0.7) : int(n * 0.9)]
+    test_cat_data = cat_data[int(n * 0.9) :]
+
+    return (
+        train_df,
+        val_df,
+        test_df,
+        train_cat_data,
+        val_cat_data,
+        test_cat_data,
+        hr_scaler,
+        br_scaler,
+        rr_scaler,
+    )
 
 
 def plot_samples(train_df, num_samples=3):
@@ -132,10 +176,49 @@ def plot_samples(train_df, num_samples=3):
     plt.show()
 
 
+def plot_samples_with_cat_data(train_df, train_cat_data, num_samples=2):
+    fig, axes = plt.subplots(num_samples, 2, figsize=(14, 6))
+    fig.subplots_adjust(hspace=0.5)
+
+    for i in range(num_samples):
+        # Plot time-series data
+        ax1 = axes[i, 0]
+        sample = train_df[i]
+        ax1.plot(sample[:, 0], label="HR")
+        ax1.plot(sample[:, 1], label="BR")
+        ax1.plot(sample[:, 2], label="RR")
+        ax1.set_title(f"Sample {i+1}")
+        ax1.set_xlabel("Time")
+        ax1.set_ylabel("Value")
+        ax1.legend()
+
+        # Plot categorical data
+        ax2 = axes[i, 1]
+        cat_sample = train_cat_data.iloc[i]
+        ax2.barh(cat_sample.index, cat_sample.values)
+        ax2.set_title(f"Sample {i+1} Demographic Data")
+        ax2.set_xlabel("Value")
+
+    plt.tight_layout()
+    plt.show()
+
+
 if __name__ == "__main__":
     # Example usage
     df = pd.read_pickle("SportDB.pkl")
-    train_df, val_df, test_df, _, _, _ = preprocess_data(df)
+    print(df.columns)
+    (
+        train_df,
+        val_df,
+        test_df,
+        train_cat_data,
+        val_cat_data,
+        test_cat_data,
+        _,
+        _,
+        _,
+    ) = preprocess_data(df)
     print(len(train_df))
     print(train_df[0].shape)
     # plot_samples(train_df)
+    plot_samples_with_cat_data(train_df, train_cat_data)

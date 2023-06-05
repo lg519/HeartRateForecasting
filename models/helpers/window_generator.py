@@ -3,14 +3,25 @@ import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
-from preprocess_data import preprocess_data
+from .preprocess_data import preprocess_data
 
 df = pd.read_pickle("SportDB.pkl")
 
-train_df, val_df, test_df, hr_scaler, br_scaler, rr_scaler = preprocess_data(df)
+
+(
+    train_df,
+    val_df,
+    test_df,
+    train_cat_df,
+    val_cat_df,
+    test_cat_df,
+    hr_scaler,
+    br_scaler,
+    rr_scaler,
+) = preprocess_data(df)
 
 # Set number of output features
-num_input_features = 1
+num_input_features = 3
 num_output_features = 1
 
 
@@ -29,6 +40,9 @@ class WindowGenerator:
         train_df=train_df,
         val_df=val_df,
         test_df=test_df,
+        train_cat_df=train_cat_df,
+        val_cat_df=val_cat_df,
+        test_cat_df=test_cat_df,
         hr_scaler=hr_scaler,
         br_scaler=br_scaler,
         rr_scaler=rr_scaler,
@@ -40,6 +54,9 @@ class WindowGenerator:
         self.train_df = train_df
         self.val_df = val_df
         self.test_df = test_df
+        self.train_cat_df = train_cat_df
+        self.val_cat_df = val_cat_df
+        self.test_cat_df = test_cat_df
 
         # Store the scalers
         self.hr_scaler = hr_scaler
@@ -77,7 +94,11 @@ class WindowGenerator:
             ]
         )
 
-    def split_window(self, features):
+    def split_window(self, features, cat_data):
+        # print(f"features shape: {features.shape}")
+        # print(f"cat_data shape: {cat_data.shape}")
+        # print(f"cat_data: {cat_data}")
+
         inputs = features[:, self.input_slice, :]
 
         # Change the last dimention of this vector from 0 to : to plot multi-output sources with window generator
@@ -100,14 +121,14 @@ class WindowGenerator:
         inputs.set_shape([None, self.input_width, None])
         labels.set_shape([None, self.label_width, None])
 
-        return inputs, labels
+        return (inputs, cat_data), labels
 
-    def make_dataset(self, data):
+    def make_dataset(self, data, cat_data):
         datasets = []
 
         # print(f"data shape is {len(data[0])}")
 
-        for row in data:
+        for i, row in enumerate(data):
             row = np.array(row, dtype=np.float32)
             # print(f"row shape: {row.shape}")
             # print(f"row: {row}")
@@ -116,13 +137,42 @@ class WindowGenerator:
                 targets=None,
                 sequence_length=self.total_window_size,
                 sequence_stride=1,
-                shuffle=True,
+                shuffle=False,
                 batch_size=128,
             )
+
+            # iterate through all elements of dataset
+            # for x in ds:
+            #     print(f"element of dataset shape: {x.shape}")
+
             # print first element of dataset
             # for x in ds.take(1):
             #     print(f"first element of dataset shape: {x.shape}")
             #     print(f"first element of dataset: {x}")
+
+            # Create corresponding dataset for categorical data
+            cat_row = cat_data.iloc[i]
+            # print(cat_row)
+            cat_ts = tf.convert_to_tensor(cat_row)
+
+            # print first element of dataset
+            # for x in cat_ds.take(1):
+            #     print(f"first element of cat dataset shape: {x.shape}")
+            #     print(f"first element of cat dataset: {x}")
+
+            # for x in ds:
+            #     print(f"x type is {type(x)}")
+            #     print(f"x shape is {x.shape}")
+
+            ds = ds.map(lambda x: (x, tf.broadcast_to(cat_ts, [tf.shape(x)[0], 7])))
+
+            print(ds)
+
+            # iterate through ds and print every element shape
+            # for x in ds:
+            #     print(f"x[0] shape is {x[0].shape}")
+            #     print(f"x[1] shape is {x[1].shape}")
+            #     print(x[1])
 
             ds = ds.map(self.split_window)
 
@@ -139,12 +189,13 @@ class WindowGenerator:
         for ds in datasets[1:]:
             merged_ds = merged_ds.concatenate(ds)
 
-        print(merged_ds)
+        # print(merged_ds)
 
         return merged_ds
 
     def plot(self, model=None, plot_cols=["HR", "BR", "RR"], max_subplots=3):
-        inputs, labels = self.example
+        (inputs, cat_data), labels = self.example
+        print(f"cat_data for these inputs: {cat_data}")
         plt.figure(figsize=(12, 8))
 
         for n in range(max_subplots):
@@ -164,7 +215,6 @@ class WindowGenerator:
                     raise ValueError(
                         f"plot_col_index must be 0, 1 or 2, not {plot_col_index}"
                     )
-
                 plt.subplot(max_subplots, len(plot_cols), n * len(plot_cols) + i + 1)
                 plt.ylabel(f"{plot_col}")
                 # print(inputs.shape)
@@ -212,15 +262,15 @@ class WindowGenerator:
 
     @property
     def train(self):
-        return self.make_dataset(self.train_df)
+        return self.make_dataset(self.train_df, self.train_cat_df)
 
     @property
     def val(self):
-        return self.make_dataset(self.val_df)
+        return self.make_dataset(self.val_df, self.val_cat_df)
 
     @property
     def test(self):
-        return self.make_dataset(self.test_df)
+        return self.make_dataset(self.test_df, self.test_cat_df)
 
     @property
     def example(self):
