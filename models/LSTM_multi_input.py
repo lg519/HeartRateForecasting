@@ -33,15 +33,13 @@ if __name__ == "__main__":
     demographic_input = tf.keras.layers.Input(shape=(7,), name="vector_input")
 
     # Apply Dense layer on demographic input
-    demographic_output = tf.keras.layers.Dense(32)(demographic_input)
+    demographic_output = tf.keras.layers.Dense(14)(demographic_input)
 
     # Concatenate LSTM output and vector_input
     concat = tf.keras.layers.concatenate([x, demographic_output])
 
     # Apply Dense layer on concatenated output
-    output = tf.keras.layers.Dense(
-        label_width * num_output_features, kernel_initializer=tf.initializers.zeros()
-    )(concat)
+    output = tf.keras.layers.Dense(label_width * num_output_features)(concat)
     output = tf.keras.layers.Reshape([label_width, num_output_features])(output)
 
     multi_lstm_model = tf.keras.models.Model(
@@ -51,7 +49,9 @@ if __name__ == "__main__":
     print(multi_lstm_model.summary())
 
     history = compile_and_fit(multi_lstm_model, window)
-    # window.plot(feedback_model)
+    window.plot(model=multi_lstm_model)
+    # Save the model
+    multi_lstm_model.save("saved_models/LSTM")
 
     run_model = tf.function(lambda x: multi_lstm_model(x))
     # This is important, let's fix the input size.

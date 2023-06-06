@@ -137,7 +137,7 @@ class WindowGenerator:
                 targets=None,
                 sequence_length=self.total_window_size,
                 sequence_stride=1,
-                shuffle=False,
+                shuffle=True,
                 batch_size=128,
             )
 
@@ -196,6 +196,8 @@ class WindowGenerator:
     def plot(self, model=None, plot_cols=["HR", "BR", "RR"], max_subplots=3):
         (inputs, cat_data), labels = self.example
         print(f"cat_data for these inputs: {cat_data}")
+        print(f"cat_data shape: {cat_data.shape}")
+        print("in window generator plot function")
         plt.figure(figsize=(12, 8))
 
         for n in range(max_subplots):
@@ -240,7 +242,9 @@ class WindowGenerator:
                 )
 
                 if model is not None:
-                    predictions = model(inputs)
+                    print("model is not none")
+                    model_input = (inputs, cat_data)
+                    predictions = model(model_input)
                     plt.scatter(
                         self.label_indices,
                         scaler.inverse_transform(
