@@ -16,32 +16,38 @@ def filter_data(arr):
 
 
 def preprocess_data(df):
-    # Extract categorical data
-    cat_cols = [
-        "gender",
-        "age",
-        "weight",
-        "height",
-        "smoking",
-        "alcohol",
-        "weekly_training",
-    ]
+    # Extract demographic data
+    num_cols = ["age", "weight", "height"]
+    cat_cols = ["gender", "smoking", "alcohol", "weekly_training"]
+    num_data = df[num_cols]
     cat_data = df[cat_cols]
 
     # Replace 'NA' strings with numpy NaN
+    num_data = num_data.replace("NA", np.nan)
     cat_data = cat_data.replace("NA", np.nan)
 
     # Apply mode imputation to deal with missing values
-    cat_data.fillna(cat_data.mode().iloc[0], inplace=True)
+    num_data.fillna(num_data.median(), inplace=True)  # Use median for numeric data
+    cat_data.fillna(
+        cat_data.mode().iloc[0], inplace=True
+    )  # Use mode for categorical data
 
-    # Fill missing values using mode imputation
-    for col in cat_cols:
-        cat_data[col].fillna(cat_data[col].mode()[0])
+    # # Fill missing values using mode imputation
+    # for col in cat_cols:
+    #     cat_data[col].fillna(cat_data[col].mode()[0])
+
+    # Normalize numeric data
+    num_data_scaler = MinMaxScaler()
+    num_data = pd.DataFrame(num_data_scaler.fit_transform(num_data), columns=num_cols)
 
     # Convert data to float
+    num_data = num_data.astype(float)
     cat_data = cat_data.astype(float)
 
-    print(cat_data.head())
+    # Combine the data
+    dem_data = pd.concat([num_data, cat_data], axis=1)
+
+    print(dem_data.head())
     # Extract heart rate data
     heart_rate_data = df["HR"]
     # print(f"first sample of HR data shape is {df['HR'][0].shape}")
@@ -142,18 +148,18 @@ def preprocess_data(df):
     test_df = combined_data[int(n * 0.9) :]
 
     # Split the categorical data into train, validation, and test sets
-    n = len(cat_data)
-    train_cat_data = cat_data[0 : int(n * 0.7)]
-    val_cat_data = cat_data[int(n * 0.7) : int(n * 0.9)]
-    test_cat_data = cat_data[int(n * 0.9) :]
+    n = len(dem_data)
+    train_dem_data = dem_data[0 : int(n * 0.7)]
+    val_dem_data = dem_data[int(n * 0.7) : int(n * 0.9)]
+    test_dem_data = dem_data[int(n * 0.9) :]
 
     return (
         train_df,
         val_df,
         test_df,
-        train_cat_data,
-        val_cat_data,
-        test_cat_data,
+        train_dem_data,
+        val_dem_data,
+        test_dem_data,
         hr_scaler,
         br_scaler,
         rr_scaler,
@@ -176,7 +182,7 @@ def plot_samples(train_df, num_samples=3):
     plt.show()
 
 
-def plot_samples_with_cat_data(train_df, train_cat_data, num_samples=2):
+def plot_samples_with_dem_data(train_df, train_dem_data, num_samples=2):
     fig, axes = plt.subplots(num_samples, 2, figsize=(14, 6))
     fig.subplots_adjust(hspace=0.5)
 
@@ -194,7 +200,7 @@ def plot_samples_with_cat_data(train_df, train_cat_data, num_samples=2):
 
         # Plot categorical data
         ax2 = axes[i, 1]
-        cat_sample = train_cat_data.iloc[i]
+        cat_sample = train_dem_data.iloc[i]
         ax2.barh(cat_sample.index, cat_sample.values)
         ax2.set_title(f"Sample {i+1} Demographic Data")
         ax2.set_xlabel("Value")
@@ -211,9 +217,9 @@ if __name__ == "__main__":
         train_df,
         val_df,
         test_df,
-        train_cat_data,
-        val_cat_data,
-        test_cat_data,
+        train_dem_data,
+        val_dem_data,
+        test_dem_data,
         _,
         _,
         _,
@@ -221,4 +227,4 @@ if __name__ == "__main__":
     print(len(train_df))
     print(train_df[0].shape)
     # plot_samples(train_df)
-    plot_samples_with_cat_data(train_df, train_cat_data)
+    plot_samples_with_dem_data(train_df, train_dem_data)
