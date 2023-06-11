@@ -47,7 +47,7 @@ def preprocess_data(df):
     # Combine the data
     dem_data = pd.concat([num_data, cat_data], axis=1)
 
-    print(dem_data.head())
+    # print(dem_data.head())
     # Extract heart rate data
     heart_rate_data = df["HR"]
     # print(f"first sample of HR data shape is {df['HR'][0].shape}")
@@ -61,7 +61,7 @@ def preprocess_data(df):
     rr_data = df["RR"]
     # print(f"first sample of RR data shape is {df['RR'][0].shape}")
 
-    print(len(heart_rate_data))
+    # print(len(heart_rate_data))
 
     # Filter the rows
     zero_check_hr = heart_rate_data.apply(filter_data)
@@ -69,21 +69,21 @@ def preprocess_data(df):
     breathing_rate_data = breathing_rate_data[~zero_check_hr].reset_index(drop=True)
     # ecg_data = ecg_data[~zero_check_hr].reset_index(drop=True)
     rr_data = rr_data[~zero_check_hr].reset_index(drop=True)
-    print(len(heart_rate_data))
+    # print(len(heart_rate_data))
 
     zero_check_br = breathing_rate_data.apply(filter_data)
     heart_rate_data = heart_rate_data[~zero_check_br].reset_index(drop=True)
     breathing_rate_data = breathing_rate_data[~zero_check_br].reset_index(drop=True)
     # ecg_data = ecg_data[~zero_check_br].reset_index(drop=True)
     rr_data = rr_data[~zero_check_br].reset_index(drop=True)
-    print(len(heart_rate_data))
+    # print(len(heart_rate_data))
 
     zero_check_rr = rr_data.apply(filter_data)
     heart_rate_data = heart_rate_data[~zero_check_rr].reset_index(drop=True)
     breathing_rate_data = breathing_rate_data[~zero_check_rr].reset_index(drop=True)
     # ecg_data = ecg_data[~zero_check_rr].reset_index(drop=True)
     rr_data = rr_data[~zero_check_rr].reset_index(drop=True)
-    print(len(heart_rate_data))
+    # print(len(heart_rate_data))
 
     # Concatenate each row of HR and BR data
     concatenated_hr = np.concatenate(heart_rate_data)

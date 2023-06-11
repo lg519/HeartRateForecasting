@@ -48,8 +48,8 @@ class WindowGenerator:
         rr_scaler=rr_scaler,
     ):
         # Set random seed
-        tf.random.set_seed(1)
-        np.random.seed(1)
+        # tf.random.set_seed(4)
+        # np.random.seed(4)
         # Store the raw data.
         self.train_df = train_df
         self.val_df = val_df
@@ -166,7 +166,7 @@ class WindowGenerator:
 
             ds = ds.map(lambda x: (x, tf.broadcast_to(cat_ts, [tf.shape(x)[0], 7])))
 
-            print(ds)
+            # print(ds)
 
             # iterate through ds and print every element shape
             # for x in ds:
@@ -195,9 +195,9 @@ class WindowGenerator:
 
     def plot(self, model=None, plot_cols=["HR", "BR", "RR"], max_subplots=3):
         (inputs, cat_data), labels = self.example
-        print(f"cat_data for these inputs: {cat_data}")
-        print(f"cat_data shape: {cat_data.shape}")
-        print("in window generator plot function")
+        # print(f"cat_data for these inputs: {cat_data}")
+        # print(f"cat_data shape: {cat_data.shape}")
+        # print("in window generator plot function")
         plt.figure(figsize=(12, 8))
 
         for n in range(max_subplots):
@@ -242,7 +242,7 @@ class WindowGenerator:
                 )
 
                 if model is not None:
-                    print("model is not none")
+                    # print("model is not none")
                     model_input = (inputs, cat_data)
                     predictions = model(model_input)
                     plt.scatter(

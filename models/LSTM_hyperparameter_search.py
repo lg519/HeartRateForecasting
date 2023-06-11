@@ -1,4 +1,4 @@
-from keras_tuner import HyperModel, RandomSearch
+from keras_tuner import HyperModel, RandomSearch, GridSearch
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -71,7 +71,7 @@ class HyperModelBuilder(HyperModel):
 hypermodel = HyperModelBuilder()
 
 # Initialize tuner
-tuner = RandomSearch(
+tuner = GridSearch(
     hypermodel,
     objective="val_loss",
     max_trials=15,
@@ -108,7 +108,7 @@ print(
 )
 
 # Save the best hyperparameters to a file
-with open("best_hyperparameters.json", "w") as f:
+with open("best_LSTM_hyperparameters.json", "w") as f:
     json.dump(best_hps.values, f)
 
 # Retrieve the best model

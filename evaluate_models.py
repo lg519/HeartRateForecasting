@@ -11,9 +11,9 @@ from models.helpers.window_generator import (
 
 
 # load the model
-model = tf.keras.models.load_model("saved_models/LSTM_single_shot_model")
+model = tf.keras.models.load_model("saved_models/LSTM_hyperparameter_best")
 
 
 # Create a window
 window = WindowGenerator(input_width=input_width, label_width=label_width, shift=shift)
-window.plot(model, max_subplots=3)
+window.plot(model, plot_cols=["HR"], max_subplots=1)

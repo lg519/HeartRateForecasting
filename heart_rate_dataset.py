@@ -81,10 +81,49 @@ for column in demographics_columns:
     df[column] = pd.to_numeric(df[column], errors="coerce")
 
 # Visualize demographic data using Seaborn's pairplot
-sns.pairplot(
-    df[demographics_columns].dropna()
-)  # Remove rows with NaN values for plotting
+# sns.pairplot(
+#     df[demographics_columns].dropna()
+# )  # Remove rows with NaN values for plotting
+# plt.show()
+
+categorical_columns = ["gender", "smoking", "alcohol", "weekly_training"]
+
+# mapping the categories
+df["gender"] = df["gender"].map({0: "male", 1: "female"})
+df["smoking"] = df["smoking"].map({0: "No", 1: "Yes"})
+df["alcohol"] = df["alcohol"].map({0: "No", 1: "Yes"})
+
+fig, axs = plt.subplots(ncols=len(categorical_columns), figsize=(20, 5))
+
+for i, column in enumerate(categorical_columns):
+    sns.countplot(x=df[column].dropna(), ax=axs[i])
+    axs[i].set_title(f"Countplot of {column}")
+
+plt.tight_layout()
 plt.show()
+
+non_categorical_columns = ["age", "weight", "height"]
+units = ["years", "kg", "cm"]
+
+# Create a new DataFrame with non-categorical data
+non_categorical = df[non_categorical_columns]
+
+# Create subplots
+fig, axs = plt.subplots(1, len(non_categorical_columns), figsize=(15, 5))
+
+# Plot
+for i, column in enumerate(non_categorical_columns):
+    sns.violinplot(data=non_categorical[column], ax=axs[i])
+    axs[i].set_title(f"Violin plot of {column}")
+    axs[i].set_ylabel(f"{column} ({units[i]})")
+
+plt.tight_layout()
+plt.show()
+
+
+# for column in demographics_columns:
+#     sns.violinplot(x=df[column].dropna())
+#     plt.show()
 
 
 heart_rate_data = df["HR"]

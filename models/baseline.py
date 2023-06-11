@@ -13,7 +13,8 @@ class Baseline(tf.keras.Model):
         self.label_width = label_width
 
     def call(self, inputs):
-        last_value = inputs[:, -1:, 0]  # Get the last value of the HR data
+        (time_series_inputs, demographic_inputs) = inputs
+        last_value = time_series_inputs[:, -1:, 0]  # Get the last value of the HR data
         # print(last_value.shape)
         repeated_last_value = tf.repeat(last_value, self.label_width, axis=1)
         # print(repeated_last_value.shape)
@@ -30,11 +31,15 @@ if __name__ == "__main__":
     # Create the baseline model
     baseline_model = Baseline(label_width=baseline_window.label_width)
 
-    baseline_model.compile(loss=tf.losses.MeanAbsoluteError())
+    baseline_model.compile(
+        loss=tf.keras.losses.MeanSquaredError(),
+        optimizer=tf.keras.optimizers.Adam(),
+        metrics=[tf.keras.metrics.MeanAbsoluteError()],
+    )
 
     # # Evaluate the performance of the baseline model on test data
     test_performance = {}
-    test_performance["Baseline"] = baseline_model.evaluate(baseline_window.test)
+    test_performance["Baseline"] = baseline_model.evaluate(baseline_window.val)
 
     # Visualize the predictions of the baseline model
     baseline_window.plot(baseline_model)
